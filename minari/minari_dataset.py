@@ -1,49 +1,53 @@
 import os
-import warnings
-from typing import Callable, Dict, List, Optional, Union
-
+from typing import Callable, List, Optional, Union
+from __future__ import annotations
 import gymnasium as gym
 import h5py
 import numpy as np
-from gymnasium.envs.registration import EnvSpec
 
-from minari.storage.datasets_root_dir import get_dataset_path
-from minari.utils.data_collector import DataCollectorV0
+from minari.data_collector import DataCollectorV0
+from minari.minari_storage import MinariStorage, _PathLike
 
 
 class MinariDataset:
     """Main Minari dataset class to sample data and get metadata information from a dataset.
 
-    TODO: Currently sampling data is not implemented
     """
 
-    def __init__(self, data_path: str):
+    def __init__(
+            self,
+            data: Union[MinariStorage, _PathLike],
+            episode_indices: Optional[np.ndarray] = None
+    ):
         """Initialize properties of the Minari Dataset.
 
         Args:
             data_path (str): full path to the `main_data.hdf5` file of the dataset.
         """
-        self._data_path = data_path
+        if isinstance(data, MinariStorage):
+            self._data = data
+        else:
+            self._data = MinariStorage(data)
+
         self._extra_data_id = 0
-        with h5py.File(self._data_path, "r") as f:
-            self._flatten_observations = f.attrs["flatten_observation"]
-            self._flatten_actions = f.attrs["flatten_action"]
-            self._env_spec = EnvSpec.from_json(f.attrs["env_spec"])
 
-            self._total_episodes: int = f.attrs["total_episodes"]
-            self._total_steps: int = f.attrs["total_steps"]
+        if episode_indices is None:
+            episode_indices = np.arange(self._data.total_episodes)
+        self._episode_indices = episode_indices
+        
+        self._total_steps = None
 
-            self._dataset_name = f.attrs["dataset_name"]
-            self._combined_datasets = f.attrs.get("combined_datasets")
-
-            env = gym.make(self._env_spec)
-
-            self._observation_space = env.observation_space
-            self._action_space = env.action_space
-
-            env.close()
-
-        self._episode_idx = list(range(self._total_episodes))
+    @property
+    def total_episodes(self):
+        """Total episodes recorded in the Minari dataset."""
+        return len(self._episode_indices)
+    
+    @property
+    def total_steps(self):
+        """Total episodes steps in the Minari dataset."""
+        if self._total_steps is None:
+            self._total_steps = ...  # TODO, lazy initialization
+        return self._total_steps
 
     def recover_environment(self):
         """Recover the Gymnasium environment used to create the dataset.
@@ -51,91 +55,12 @@ class MinariDataset:
         Returns:
             environment: Gymnasium environment
         """
-        return gym.make(self._env_spec)
+        return gym.make(self._data.env_spec)
 
-    @property
-    def flatten_observations(self) -> bool:
-        """If the observations have been flatten when creating the dataset."""
-        return self._flatten_observations
-
-    @property
-    def flatten_actions(self) -> bool:
-        """If the actions have been flatten when creating the dataset."""
-        return self._flatten_actions
-
-    @property
-    def observation_space(self):
-        """Original observation space of the environment before flatteining (if this is the case)."""
-        return self._observation_space
-
-    @property
-    def action_space(self):
-        """Original action space of the environment before flatteining (if this is the case)."""
-        return self._action_space
-
-    @property
-    def data_path(self):
-        """Full path to the `main_data.hdf5` file of the dataset."""
-        return self._data_path
-
-    @property
-    def total_steps(self):
-        """Total steps recorded in the Minari dataset along all episodes."""
-        return self._total_steps
-
-    @property
-    def total_episodes(self):
-        """Total episodes recorded in the Minari dataset."""
-        return self._total_episodes
-
-    @property
-    def combined_datasets(self):
-        """If this Minari dataset is a combination of other subdatasets, return a list with the subdataset names."""
-        if self._combined_datasets is None:
-            return []
-        else:
-            return self._combined_datasets
-
-    @property
-    def name(self):
-        """Name of the Minari dataset."""
-        return self._dataset_name
-
-    def _filter_episode_group(
-        self, condition_func: Callable[[h5py.Group], bool], hdf5_file: h5py.File
-    ) -> Callable[[int], bool]:
-        """Decorator to filter episodes by group given episode id.
-
-        Args:
-            condition_func (Callable[[h5py.Group], bool]): HDF5 episode group
-            hdf5_file (h5py.File): opened HDF5 dataset file
-
-        Returns:
-            Callable[[int], bool]: True if condition is met, False otherwise
-        """
-
-        def condition_from_episode_id(episode_id: int) -> bool:
-            """Check condition by episode index.
-
-            Args:
-                episode_id (int): the index of the episode
-
-            Returns:
-                bool: True if condition is met, False otherwise
-            """
-            episode_group = hdf5_file[f"episode_{episode_id}"]
-            assert isinstance(episode_group, h5py.Group)
-            keep_episode = condition_func(episode_group)
-            if not keep_episode:
-                total_episode_steps = episode_group.attrs["total_steps"]
-                assert isinstance(total_episode_steps, int)
-                self._total_steps -= total_episode_steps
-
-            return keep_episode
-
-        return condition_from_episode_id
-
-    def filter_episodes(self, condition: Callable[[h5py.Group], bool]):
+    def filter_episodes(
+        self,
+        condition: Callable[[h5py.Group], bool]
+    ) -> MinariDataset:
         """Filter the dataset episodes with a condition.
 
         The condition must be a callable with  a single argument, the episode HDF5 group.
@@ -149,42 +74,72 @@ class MinariDataset:
         Args:
             condition (Callable[[h5py.Group], bool]): callable that accepts an episode group and returns True if certain condition is met.
         """
-        with h5py.File(self._data_path, "r") as f:
-            condition_func = self._filter_episode_group(condition, f)
-            self._episode_idx = list(filter(condition_func, self._episode_idx))
+        mask = self._data.apply(
+            condition,
+            episode_indices=self._episode_indices
+        )
 
-        self._total_episodes = len(self._episode_idx)
-        "TODO: return new updated Minari dataset object instead of updating the current object"
+        return MinariDataset(
+            self._data,
+            episode_indices=self._episode_indices[mask]
+        )
 
-    def shuffle_episodes(self, seed: Optional[int] = None):
+    def shuffle_episodes(self, seed: Optional[int] = None) -> MinariDataset:
         """Suffle the episode iterator for sampling.
 
         Args:
             seed (Optional[int], optional): random seed to shuffle the episodes. Defaults to None.
         """
-        pass
+        generator = np.random.default_rng(seed=seed)
+        return MinariDataset(
+            self._data,
+            episode_indices=generator.permutation(self._episode_indices)
+        )
 
     def sample_episodes(
         self,
-        n_episodes: Optional[int] = None,
-        normalize_observation: bool = False,
-        normalize_reward: bool = False,
-    ):
+        n_episodes: int,
+        seed: Optional[int] = None
+    ) -> MinariDataset:
         """Sample n number of episodes from the dataset.
 
         Args:
-            n_episodes (Optional[int], optional): _description_. Defaults to None.
-            normalize_observation (bool, optional): _description_. Defaults to False.
-            normalize_reward (bool, optional): _description_. Defaults to False.
+            n_episodes (Optional[int], optional): _description_..
         """
-        pass
+        generator = np.random.default_rng(seed=seed)
+        new_indices = generator.choice(
+            self._episode_indices,
+            size=n_episodes,
+            replace=False
+        )
+        return MinariDataset(self._data, episode_indices=new_indices)
 
-    def reset_episodes(self):
-        """Reset the dataset to its initial state.
+    def iter(
+        self,
+        batch_size: int,
+        circular: bool = False,
+        seed: Optional[int] = None
+    ) -> List[h5py.Group]:
+        """Sample n number of episodes from the dataset.
 
-        Re-fill index array with filtered episodes and sort them.
+        Args:
+            n_episodes (Optional[int], optional): _description_..
         """
-        pass
+        generator = np.random.default_rng(seed=seed)
+        shuffled_indices = generator.permutation(self._episode_indices)
+        start_idx = 0
+        end_idx = batch_size
+        while end_idx < self.total_episodes:
+            batch_indices = shuffled_indices[start_idx:end_idx]
+            episodes = self._data.get_episodes(batch_indices)
+            start_idx = end_idx
+            end_idx += batch_size
+            if circular and end_idx >= self.total_episodes:
+                shuffled_indices = generator.permutation(self._episode_indices)
+                start_idx = 0
+                end_idx = batch_size
+
+            yield episodes
 
     def update_dataset_from_collector_env(self, collector_env: DataCollectorV0):
         """Add extra data to Minari dataset from collector environment buffers (DataCollectorV0).
@@ -280,294 +235,3 @@ class MinariDataset:
             file.attrs.modify(
                 "total_steps", file.attrs["total_steps"] + additional_steps
             )
-
-
-def clear_episode_buffer(episode_buffer: Dict, eps_group: h5py.Group):
-    """Save an episode dictionary buffer into an HDF5 episode group recursively.
-
-    Args:
-        episode_buffer (dict): episode buffer
-        eps_group (h5py.Group): HDF5 group to store the episode datasets
-
-    Returns:
-        episode group: filled HDF5 episode group
-    """
-    for key, data in episode_buffer.items():
-        if isinstance(data, dict):
-            if key in eps_group:
-                eps_group_to_clear = eps_group[key]
-            else:
-                eps_group_to_clear = eps_group.create_group(key)
-            clear_episode_buffer(data, eps_group_to_clear)
-        else:
-            # assert data is numpy array
-            assert np.all(np.logical_not(np.isnan(data)))
-            # add seed to attributes
-            eps_group.create_dataset(key, data=data, chunks=True)
-
-    return eps_group
-
-
-def combine_datasets(datasets_to_combine: List[MinariDataset], new_dataset_name: str):
-    """Combine a group of MinariDataset in to a single dataset with its own name id.
-
-    A new HDF5 metadata attribute will be added to the new dataset called `combined_datasets`. This will
-    contain a list of strings with the dataset names that were combined to form this new Minari dataset.
-
-    Args:
-        datasets_to_combine (list[MinariDataset]): list of datasets to be combined
-        new_dataset_name (str): name id for the newly created dataset
-    """
-    new_dataset_path = get_dataset_path(new_dataset_name)
-
-    # Check if dataset already exists
-    if not os.path.exists(new_dataset_path):
-        new_dataset_path = os.path.join(new_dataset_path, "data")
-        os.makedirs(new_dataset_path)
-        new_data_path = os.path.join(new_dataset_path, "main_data.hdf5")
-    else:
-        raise ValueError(
-            f"A Minari dataset with ID {new_dataset_name} already exists and it cannot be overridden. Please use a different dataset name or version."
-        )
-
-    with h5py.File(new_data_path, "a", track_order=True) as combined_data_file:
-        combined_data_file.attrs["total_episodes"] = 0
-        combined_data_file.attrs["total_steps"] = 0
-        combined_data_file.attrs["dataset_name"] = new_dataset_name
-
-        combined_data_file.attrs["combined_datasets"] = [
-            dataset.name for dataset in datasets_to_combine
-        ]
-
-        for dataset in datasets_to_combine:
-            if not isinstance(dataset, MinariDataset):
-                raise ValueError(f"The dataset {dataset} is not of type MinariDataset.")
-
-            with h5py.File(dataset.data_path, "r", track_order=True) as data_file:
-                group_paths = [group.name for group in data_file.values()]
-
-                if combined_data_file.attrs.get("env_spec") is None:
-                    combined_data_file.attrs["env_spec"] = data_file.attrs["env_spec"]
-                else:
-                    if (
-                        combined_data_file.attrs["env_spec"]
-                        != data_file.attrs["env_spec"]
-                    ):
-                        raise ValueError(
-                            "The datasets to be combined have different values for `env_spec` attribute."
-                        )
-
-            if combined_data_file.attrs.get("flatten_action") is None:
-                combined_data_file.attrs["flatten_action"] = dataset.flatten_actions
-            else:
-                if (
-                    combined_data_file.attrs["flatten_action"]
-                    != dataset.flatten_actions
-                ):
-                    raise ValueError(
-                        "The datasets to be combined have different values for `flatten_action` attribute."
-                    )
-
-            if combined_data_file.attrs.get("flatten_observation") is None:
-                combined_data_file.attrs[
-                    "flatten_observation"
-                ] = dataset.flatten_observations
-            else:
-                if (
-                    combined_data_file.attrs["flatten_observation"]
-                    != dataset.flatten_observations
-                ):
-                    raise ValueError(
-                        "The datasets to be combined have different values for `flatten_observation` attribute."
-                    )
-
-            last_episode_id = combined_data_file.attrs["total_episodes"]
-
-            for i, eps_group_path in enumerate(group_paths):
-                combined_data_file[
-                    f"episode_{last_episode_id + i}"
-                ] = h5py.ExternalLink(dataset.data_path, eps_group_path)
-                combined_data_file[f"episode_{last_episode_id + i}"].attrs.modify(
-                    "id", last_episode_id + i
-                )
-
-            # Update metadata of minari dataset
-            combined_data_file.attrs.modify(
-                "total_episodes", last_episode_id + dataset.total_episodes
-            )
-            combined_data_file.attrs.modify(
-                "total_steps",
-                combined_data_file.attrs["total_steps"] + dataset.total_steps,
-            )
-
-    return MinariDataset(new_data_path)
-
-
-def create_dataset_from_buffers(
-    dataset_name: str,
-    env: gym.Env,
-    buffer: List[Dict[str, Union[list, Dict]]],
-    algorithm_name: Optional[str] = None,
-    author: Optional[str] = None,
-    author_email: Optional[str] = None,
-    code_permalink: Optional[str] = None,
-):
-    """Create Minari dataset from a list of episode dictionary buffers.
-
-    Each episode dictionary buffer must have the following items:
-        * `observations`: np.ndarray of step observations. shape = (total_episode_steps + 1, (observation_shape)). Should include initial and final observation
-        * `actions`: np.ndarray of step action. shape = (total_episode_steps + 1, (action_shape)).
-        * `rewards`: np.ndarray of step rewards. shape = (total_episode_steps + 1, 1).
-        * `terminations`: np.ndarray of step terminations. shape = (total_episode_steps + 1, 1).
-        * `truncations`: np.ndarray of step truncations. shape = (total_episode_steps + 1, 1).
-
-    Other additional items can be added as long as the values are np.ndarray's or other nested dictionaries.
-
-    Args:
-        dataset_name (str): name id to identify Minari dataset
-        env (gym.Env): Gymnasium environment used to collect the buffer data
-        buffer (list[Dict[str, Union[list, Dict]]]): list of episode dictionaries with data
-        algorithm_name (Optional[str], optional): name of the algorithm used to collect the data. Defaults to None.
-        author (Optional[str], optional): author that generated the dataset. Defaults to None.
-        author_email (Optional[str], optional): email of the author that generated the dataset. Defaults to None.
-        code_permalink (Optional[str], optional): link to relevant code used to generate the dataset. Defaults to None.
-
-    Returns:
-        MinariDataset
-    """
-    # NoneType warnings
-    if code_permalink is None:
-        warnings.warn(
-            "`code_permalink` is set to None. For reproducibility purposes it is highly recommended to link your dataset to versioned code.",
-            UserWarning,
-        )
-    if author is None:
-        warnings.warn(
-            "`author` is set to None. For longevity purposes it is highly recommended to provide an author name.",
-            UserWarning,
-        )
-    if author_email is None:
-        warnings.warn(
-            "`author_email` is set to None. For longevity purposes it is highly recommended to provide an author email, or some other obvious contact information.",
-            UserWarning,
-        )
-
-    dataset_path = get_dataset_path(dataset_name)
-
-    # Check if dataset already exists
-    if not os.path.exists(dataset_path):
-        dataset_path = os.path.join(dataset_path, "data")
-        os.makedirs(dataset_path)
-        data_path = os.path.join(dataset_path, "main_data.hdf5")
-
-        total_steps = 0
-        with h5py.File(data_path, "w", track_order=True) as file:
-            for i, eps_buff in enumerate(buffer):
-                # check episode terminated or truncated
-                assert (
-                    eps_buff["terminations"][-1] or eps_buff["truncations"][-1]
-                ), "Each episode must be terminated or truncated before adding it to a Minari dataset"
-                assert len(eps_buff["actions"]) + 1 == len(
-                    eps_buff["observations"]
-                ), f"Number of observations {len(eps_buff['observations'])} must have an additional \
-                                                                                        element compared to the number of action steps {len(eps_buff['actions'])} \
-                                                                                        The initial and final observation must be included"
-                seed = eps_buff.pop("seed", None)
-                eps_group = clear_episode_buffer(
-                    eps_buff, file.create_group(f"episode_{i}")
-                )
-
-                eps_group.attrs["id"] = i
-                total_steps = len(eps_buff["actions"])
-                eps_group.attrs["total_steps"] = total_steps
-                total_steps += total_steps
-
-                if seed is None:
-                    eps_group.attrs["seed"] = str(None)
-                else:
-                    assert isinstance(seed, int)
-                    eps_group.attrs["seed"] = seed
-
-                # TODO: save EpisodeMetadataCallback callback in MinariDataset and update new episode group metadata
-
-            file.attrs["total_episodes"] = len(buffer)
-            file.attrs["total_steps"] = total_steps
-
-            # TODO: check if observation/action have been flatten and update
-            file.attrs["flatten_observation"] = False
-            file.attrs["flatten_action"] = False
-
-            file.attrs[
-                "env_spec"
-            ] = env.spec.to_json()  # pyright: ignore [reportOptionalMemberAccess]
-            file.attrs["dataset_name"] = dataset_name
-
-        return MinariDataset(data_path)
-    else:
-        raise ValueError(
-            f"A Minari dataset with ID {dataset_name} already exists and it cannot be overridden. Please use a different dataset name or version."
-        )
-
-
-def create_dataset_from_collector_env(
-    dataset_name: str,
-    collector_env: DataCollectorV0,
-    algorithm_name: Optional[str] = None,
-    author: Optional[str] = None,
-    author_email: Optional[str] = None,
-    code_permalink: Optional[str] = None,
-):
-    """Create a Minari dataset using the data collected from stepping with a Gymnasium environment wrapped with a `DataCollectorV0` Minari wrapper.
-
-    Args:
-        dataset_name (str): name id to identify Minari dataset
-        collector_env (DataCollectorV0): Gymnasium environment used to collect the buffer data
-        buffer (list[Dict[str, Union[list, Dict]]]): list of episode dictionaries with data
-        algorithm_name (Optional[str], optional): name of the algorithm used to collect the data. Defaults to None.
-        author (Optional[str], optional): author that generated the dataset. Defaults to None.
-        author_email (Optional[str], optional): email of the author that generated the dataset. Defaults to None.
-        code_permalink (Optional[str], optional): link to relevant code used to generate the dataset. Defaults to None.
-
-    Returns:
-        MinariDataset
-    """
-    # NoneType warnings
-    if code_permalink is None:
-        warnings.warn(
-            "`code_permalink` is set to None. For reproducibility purposes it is highly recommended to link your dataset to versioned code.",
-            UserWarning,
-        )
-    if author is None:
-        warnings.warn(
-            "`author` is set to None. For longevity purposes it is highly recommended to provide an author name.",
-            UserWarning,
-        )
-    if author_email is None:
-        warnings.warn(
-            "`author_email` is set to None. For longevity purposes it is highly recommended to provide an author email, or some other obvious contact information.",
-            UserWarning,
-        )
-
-    assert collector_env.datasets_path is not None
-    dataset_path = os.path.join(collector_env.datasets_path, dataset_name)
-
-    # Check if dataset already exists
-    if not os.path.exists(dataset_path):
-        dataset_path = os.path.join(dataset_path, "data")
-        os.makedirs(dataset_path)
-        data_path = os.path.join(dataset_path, "main_data.hdf5")
-        collector_env.save_to_disk(
-            data_path,
-            dataset_metadata={
-                "dataset_name": str(dataset_name),
-                "algorithm_name": str(algorithm_name),
-                "author": str(author),
-                "author_email": str(author_email),
-                "code_permalink": str(code_permalink),
-            },
-        )
-        return MinariDataset(data_path)
-    else:
-        raise ValueError(
-            f"A Minari dataset with ID {dataset_name} already exists and it cannot be overridden. Please use a different dataset name or version."
-        )
