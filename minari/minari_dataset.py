@@ -129,12 +129,12 @@ class MinariDataset:
         shuffled_indices = generator.permutation(self._episode_indices)
         start_idx = 0
         end_idx = batch_size
-        while end_idx < self.total_episodes:
+        while end_idx <= self.total_episodes:
             batch_indices = shuffled_indices[start_idx:end_idx]
             episodes = self._data.get_episodes(batch_indices)
             start_idx = end_idx
             end_idx += batch_size
-            if circular and end_idx >= self.total_episodes:
+            if circular and end_idx > self.total_episodes:
                 shuffled_indices = generator.permutation(self._episode_indices)
                 start_idx = 0
                 end_idx = batch_size
