@@ -30,12 +30,12 @@ class MinariDataset:
             self._data = MinariStorage(data)
 
         self._extra_data_id = 0
-
         if episode_indices is None:
             episode_indices = np.arange(self._data.total_episodes)
         self._episode_indices = episode_indices
-        
+
         self._total_steps = None
+        self._generator = np.random.default_rng()
 
     @property
     def total_episodes(self):
@@ -56,6 +56,9 @@ class MinariDataset:
             environment: Gymnasium environment
         """
         return gym.make(self._data.env_spec)
+
+    def set_seed(self, seed):
+        self._generator = np.random.default_rng(seed)
 
     def filter_episodes(
         self,
@@ -84,62 +87,18 @@ class MinariDataset:
             episode_indices=self._episode_indices[mask]
         )
 
-    def shuffle_episodes(self, seed: Optional[int] = None) -> MinariDataset:
-        """Suffle the episode iterator for sampling.
-
-        Args:
-            seed (Optional[int], optional): random seed to shuffle the episodes. Defaults to None.
-        """
-        generator = np.random.default_rng(seed=seed)
-        return MinariDataset(
-            self._data,
-            episode_indices=generator.permutation(self._episode_indices)
-        )
-
-    def sample_episodes(
-        self,
-        n_episodes: int,
-        seed: Optional[int] = None
-    ) -> MinariDataset:
+    def sample_episodes(self, n_episodes: int) -> dict:
         """Sample n number of episodes from the dataset.
 
         Args:
             n_episodes (Optional[int], optional): _description_..
         """
-        generator = np.random.default_rng(seed=seed)
-        new_indices = generator.choice(
+        indices = self._generator.choice(
             self._episode_indices,
             size=n_episodes,
             replace=False
         )
-        return MinariDataset(self._data, episode_indices=new_indices)
-
-    def iter(
-        self,
-        batch_size: int,
-        circular: bool = False,
-        seed: Optional[int] = None
-    ) -> List[h5py.Group]:
-        """Sample n number of episodes from the dataset.
-
-        Args:
-            n_episodes (Optional[int], optional): _description_..
-        """
-        generator = np.random.default_rng(seed=seed)
-        shuffled_indices = generator.permutation(self._episode_indices)
-        start_idx = 0
-        end_idx = batch_size
-        while end_idx <= self.total_episodes:
-            batch_indices = shuffled_indices[start_idx:end_idx]
-            episodes = self._data.get_episodes(batch_indices)
-            start_idx = end_idx
-            end_idx += batch_size
-            if circular and end_idx > self.total_episodes:
-                shuffled_indices = generator.permutation(self._episode_indices)
-                start_idx = 0
-                end_idx = batch_size
-
-            yield episodes
+        return self._data.get_episodes(indices)
 
     def update_dataset_from_collector_env(self, collector_env: DataCollectorV0):
         """Add extra data to Minari dataset from collector environment buffers (DataCollectorV0).
@@ -154,7 +113,7 @@ class MinariDataset:
         """
         # check that collector env has the same characteristics as self._env_spec
         new_data_file_path = os.path.join(
-            os.path.split(self.data_path)[0],
+            os.path.split(self._data.data_path)[0],
             f"additional_data_{self._extra_data_id}.hdf5",
         )
 
@@ -165,7 +124,7 @@ class MinariDataset:
             new_data_total_episodes = new_data_file.attrs["total_episodes"]
             new_data_total_steps = new_data_file.attrs["total_steps"]
 
-        with h5py.File(self.data_path, "a", track_order=True) as file:
+        with h5py.File(self._data.data_path, "a", track_order=True) as file:
             last_episode_id = file.attrs["total_episodes"]
             for i, eps_group_path in enumerate(group_paths):
                 file[f"episode_{last_episode_id + i}"] = h5py.ExternalLink(

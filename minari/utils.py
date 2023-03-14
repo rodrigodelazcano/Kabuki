@@ -131,6 +131,20 @@ def combine_datasets(datasets_to_combine: List[MinariDataset], new_dataset_name:
 
     return MinariDataset(new_data_path)
 
+def split_dataset(dataset: MinariDataset, sizes: List[int], seed=None) -> List[MinariDataset]:
+    assert sum(sizes) <= dataset.total_episodes
+    generator = np.random.default_rng(seed=seed)
+    indices = generator.permutation(dataset._episode_indices)
+    out_datasets = []
+    start_idx = 0
+    for length in sizes:
+        end_idx = start_idx + length
+        slice_dataset = MinariDataset(dataset._data, indices[start_idx:end_idx])
+        out_datasets.append(slice_dataset)
+        start_idx = end_idx
+
+    return out_datasets
+
 
 def create_dataset_from_buffers(
     dataset_name: str,
