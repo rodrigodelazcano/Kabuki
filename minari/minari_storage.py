@@ -56,12 +56,12 @@ class MinariStorage:
 
         return out
     
-    def get_episodes(self, episode_indices: Iterable) -> List[h5py.Group]:
+    def get_episodes(self, episode_indices: Iterable) -> List[dict]:
         out = []
         with h5py.File(self._data_path, "r") as file:
             for ep_idx in episode_indices:
                 ep_group = file[f"episode_{ep_idx}"]
-                out.append(ep_group)
+                out.append(dict(ep_group.items()))
 
         return out
 

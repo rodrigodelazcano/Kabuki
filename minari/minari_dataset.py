@@ -1,5 +1,5 @@
 import os
-from typing import Callable, List, Optional, Union
+from typing import Callable, Iterable, List, NamedTuple, Optional, Union
 from __future__ import annotations
 import gymnasium as gym
 import h5py
@@ -7,6 +7,17 @@ import numpy as np
 
 from minari.data_collector import DataCollectorV0
 from minari.minari_storage import MinariStorage, _PathLike
+
+
+class EpisodeData(NamedTuple):
+    id: int
+    observations: np.ndarray
+    actions: np.ndarray
+    rewards: np.ndarray
+    terminations: np.ndarray
+    truncations: np.ndarray
+    seed: Optional[int]
+    total_timesteps: int
 
 
 class MinariDataset:
@@ -87,7 +98,7 @@ class MinariDataset:
             episode_indices=self._episode_indices[mask]
         )
 
-    def sample_episodes(self, n_episodes: int) -> dict:
+    def sample_episodes(self, n_episodes: int) -> Iterable[EpisodeData]:
         """Sample n number of episodes from the dataset.
 
         Args:
@@ -98,7 +109,8 @@ class MinariDataset:
             size=n_episodes,
             replace=False
         )
-        return self._data.get_episodes(indices)
+        episodes = self._data.get_episodes(indices)
+        return map(lambda data: EpisodeData(**data), episodes)
 
     def update_dataset_from_collector_env(self, collector_env: DataCollectorV0):
         """Add extra data to Minari dataset from collector environment buffers (DataCollectorV0).
