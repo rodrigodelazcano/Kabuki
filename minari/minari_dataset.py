@@ -1,6 +1,6 @@
+from __future__ import annotations
 import os
 from typing import Callable, Iterable, List, NamedTuple, Optional, Union
-from __future__ import annotations
 import gymnasium as gym
 import h5py
 import numpy as np
@@ -33,12 +33,15 @@ class MinariDataset:
         """Initialize properties of the Minari Dataset.
 
         Args:
-            data_path (str): full path to the `main_data.hdf5` file of the dataset.
+            data (Union[MinariStorage, _PathLike]): source of data.
+            episode_indices (Optiona[np.ndarray]): slice of episode indices this dataset is pointing to.
         """
         if isinstance(data, MinariStorage):
             self._data = data
-        else:
+        elif isinstance(data, _PathLike):
             self._data = MinariStorage(data)
+        else:
+            raise ValueError(f"Unrecognized type {type(data)} for data")
 
         self._extra_data_id = 0
         if episode_indices is None:

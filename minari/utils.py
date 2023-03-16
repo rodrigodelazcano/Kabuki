@@ -70,7 +70,8 @@ def combine_datasets(datasets_to_combine: List[MinariDataset], new_dataset_name:
 
         for dataset in datasets_to_combine:
             if not isinstance(dataset, MinariDataset):
-                raise ValueError(f"The dataset {dataset} is not of type MinariDataset.")
+                raise ValueError(
+                    f"The dataset {dataset} is not of type MinariDataset.")
 
             with h5py.File(dataset.data_path, "r", track_order=True) as data_file:
                 group_paths = [group.name for group in data_file.values()]
@@ -131,15 +132,31 @@ def combine_datasets(datasets_to_combine: List[MinariDataset], new_dataset_name:
 
     return MinariDataset(new_data_path)
 
-def split_dataset(dataset: MinariDataset, sizes: List[int], seed=None) -> List[MinariDataset]:
-    assert sum(sizes) <= dataset.total_episodes
+
+def split_dataset(dataset: MinariDataset, sizes: List[int], seed: Optional[int] = None) -> List[MinariDataset]:
+    """Split a MinariDataset in multiple datasets.
+
+    Args:
+        dataset (MinariDataset): the MinariDataset to split
+        sizes (List[int]): sizes of the resulting datasets
+        seed (Optiona[int]): random seed
+    
+    Returns:
+        datasets (List[MinariDataset]): resulting list of datasets
+    """
+    if sum(sizes) > dataset.total_episodes:
+        raise ValueError(
+            "Incompatible arguments: the sum of sizes exceeds ",
+            f"the number of episodes in the dataset ({dataset.total_episodes})"
+        )
     generator = np.random.default_rng(seed=seed)
     indices = generator.permutation(dataset._episode_indices)
     out_datasets = []
     start_idx = 0
     for length in sizes:
         end_idx = start_idx + length
-        slice_dataset = MinariDataset(dataset._data, indices[start_idx:end_idx])
+        slice_dataset = MinariDataset(
+            dataset._data, indices[start_idx:end_idx])
         out_datasets.append(slice_dataset)
         start_idx = end_idx
 

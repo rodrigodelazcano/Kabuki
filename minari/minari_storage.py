@@ -44,7 +44,16 @@ class MinariStorage:
         self,
         function: Callable[[h5py.Group], Any],
         episode_indices: Optional[Iterable] = None
-    ):
+    ) -> List[Any]:
+        """Apply a function to a slice of the data.
+
+        Args:
+            function (Callable): function to apply to episodes
+            episode_indices (Optional[Iterable]): epsiodes id to consider
+        
+        Returns:
+            outs (list): list of outputs returned by the function applied to episodes
+        """
         if episode_indices is None:
             episode_indices = range(self.total_episodes)
         out = []
@@ -56,7 +65,15 @@ class MinariStorage:
 
         return out
     
-    def get_episodes(self, episode_indices: Iterable) -> List[dict]:
+    def get_episodes(self, episode_indices: Iterable[int]) -> List[dict]:
+        """Get a list of episodes
+
+        Args:
+            episode_indices (Iterable[int]): episodes id to return
+        
+        Returns:
+            episodes (List[dict]): list of episodes data
+        """
         out = []
         with h5py.File(self._data_path, "r") as file:
             for ep_idx in episode_indices:
