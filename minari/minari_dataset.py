@@ -86,7 +86,11 @@ class MinariDataset:
     def total_steps(self):
         """Total episodes steps in the Minari dataset."""
         if self._total_steps is None:
-            self._total_steps = ...  # TODO, lazy initialization
+            t_steps = self._data.apply(
+                lambda episode : episode["total_steps"],
+                episode_indices=self._episode_indices
+            )
+            self._total_steps = sum(t_steps)
         return self._total_steps
 
     def recover_environment(self):
