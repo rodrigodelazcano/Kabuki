@@ -1,12 +1,14 @@
 from __future__ import annotations
+from dataclasses import dataclass
 import os
 from typing import Callable, Iterable, List, NamedTuple, Optional, Union
 import gymnasium as gym
+from gymnasium.envs.registration import EnvSpec
 import h5py
 import numpy as np
 
 from minari.data_collector import DataCollectorV0
-from minari.minari_storage import MinariStorage, _PathLike
+from minari.minari_storage import MinariStorage, PathLike
 
 
 class EpisodeData(NamedTuple):
@@ -20,6 +22,19 @@ class EpisodeData(NamedTuple):
     total_timesteps: int
 
 
+@dataclass
+class MinariDatasetSpec:
+    flatten_observations: bool
+    flatten_actions: bool
+    env_spec: EnvSpec
+    total_episodes: int
+    total_steps: int
+    dataset_name: str
+    combined_datasets: List[str]
+    observation_space: gym.Space
+    action_space: gym.Space
+
+
 class MinariDataset:
     """Main Minari dataset class to sample data and get metadata information from a dataset.
 
@@ -27,7 +42,7 @@ class MinariDataset:
 
     def __init__(
             self,
-            data: Union[MinariStorage, _PathLike],
+            data: Union[MinariStorage, PathLike],
             episode_indices: Optional[np.ndarray] = None
     ):
         """Initialize properties of the Minari Dataset.
@@ -38,7 +53,7 @@ class MinariDataset:
         """
         if isinstance(data, MinariStorage):
             self._data = data
-        elif isinstance(data, _PathLike):
+        elif isinstance(data, PathLike):
             self._data = MinariStorage(data)
         else:
             raise ValueError(f"Unrecognized type {type(data)} for data")
@@ -48,6 +63,17 @@ class MinariDataset:
             episode_indices = np.arange(self._data.total_episodes)
         self._episode_indices = episode_indices
 
+        self.spec = MinariDatasetSpec(
+            flatten_observations=self._data.flatten_observations,
+            flatten_actions=self._data.flatten_actions,
+            env_spec=self._data.env_spec,
+            total_episodes=self._data.total_episodes,
+            total_steps=self._data.total_steps,
+            dataset_name=self._data.name,
+            combined_datasets=self._data.combined_datasets,
+            observation_space=self._data.observation_space,
+            action_space=self._data.action_space,
+        )
         self._total_steps = None
         self._generator = np.random.default_rng()
 

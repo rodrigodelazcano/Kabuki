@@ -5,11 +5,11 @@ import h5py
 from gymnasium.envs.registration import EnvSpec
 
 
-_PathLike = Union[str, bytes, os.PathLike]
+PathLike = Union[str, bytes, os.PathLike]
 
 
 class MinariStorage:
-    def __init__(self, data_path: _PathLike):
+    def __init__(self, data_path: PathLike):
         """Initialize properties of the Minari storage.
 
         Args:
@@ -18,21 +18,32 @@ class MinariStorage:
         self._data_path = data_path
         self._extra_data_id = 0
         with h5py.File(self._data_path, "r") as f:
-            self._flatten_observations = f.attrs["flatten_observation"]
-            self._flatten_actions = f.attrs["flatten_action"]
+            flatten_observations = f.attrs["flatten_observation"]
+            assert isinstance(flatten_observations, bool)
+            self._flatten_observations = flatten_observations
+
+            flatten_actions = f.attrs["flatten_action"]
+            assert isinstance(flatten_actions, bool)
+            self._flatten_actions = flatten_actions
+
             self._env_spec = EnvSpec.from_json(f.attrs["env_spec"])
 
-            _total_episodes = f.attrs["total_episodes"]
-            assert isinstance(_total_episodes, int)
-            self._total_episodes: int = _total_episodes
+            total_episodes = f.attrs["total_episodes"]
+            assert isinstance(total_episodes, int)
+            self._total_episodes: int = total_episodes
 
-            _total_steps = f.attrs["total_steps"]
-            assert isinstance(_total_steps, int)
-            self._total_steps: int = _total_steps
+            total_steps = f.attrs["total_steps"]
+            assert isinstance(total_steps, int)
+            self._total_steps: int = total_steps
 
-            self._dataset_name = f.attrs["dataset_name"]
-            self._combined_datasets = f.attrs.get("combined_datasets")
+            dataset_name = f.attrs["dataset_name"]
+            assert isinstance(dataset_name, str)
+            self._dataset_name = dataset_name
 
+            combined_datasets = f.attrs.get("combined_datasets")
+            assert isinstance(combined_datasets, List)
+            self._combined_datasets = combined_datasets
+            
             env = gym.make(self._env_spec)
 
             self._observation_space = env.observation_space
@@ -123,7 +134,7 @@ class MinariStorage:
         return self._env_spec
 
     @property
-    def combined_datasets(self):
+    def combined_datasets(self) -> List[str]:
         """If this Minari dataset is a combination of other subdatasets, return a list with the subdataset names."""
         if self._combined_datasets is None:
             return []
@@ -131,6 +142,6 @@ class MinariStorage:
             return self._combined_datasets
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Name of the Minari dataset."""
         return self._dataset_name
