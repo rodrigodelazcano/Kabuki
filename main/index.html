@@ -8,14 +8,21 @@
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
     <meta property="og:url" content="https://minari.farama.org/index.html" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex/" /><link rel="search" title="Search" href="search/" /><link rel="next" title="Local Storage" href="api/local_storage/" />
+<link rel="index" title="Index" href="genindex/" /><link rel="search" title="Search" href="search/" /><link rel="next" title="Basic Usage" href="content/basic_usage/" />
         <link rel="canonical" href="https://minari.farama.org/index.html" />
 
     <link rel="shortcut icon" href="_static/favicon.png"/><!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07.dev1 -->
         <title>Minari Documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=721f65a87c37740baa8d605b09db5bec3a2987a8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=b0c92cd440df7c18a0306b0433406327ff2c572f" />
+    <link rel="stylesheet" type="text/css" href="_static/css/termynal.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/directory_tree.css" />
     
     
 
@@ -222,20 +229,32 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">API</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/local_storage/">Local Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/remote_storage/">Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/basic_usage/">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/dataset_standards/">Dataset Standards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/minari_cli/">Minari CLI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/minari_functions/">Minari</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/minari_dataset/">MinariDataset</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/data_collector/">DataCollectorV0</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/data_collector_callbacks/step_data_callback/">StepDataCallback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/data_collector_callbacks/episode_metadata_callback/">EpisodeMetadataCallback</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/dataset_creation/">Dataset Creation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/dataset_usage/">Dataset Usage</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/dataset_creation/">Dataset Creation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/dataset_creation/point_maze_dataset/">PointMaze D4RL dataset</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Farama-Foundation/Minari">Github</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://farama.org/donations">Donate</a></li>
 </ul>
 
 </div>
@@ -284,14 +303,49 @@
           </div>
           <article role="main">
             
-            <div class="toctree-wrapper compound">
+            <section id="minari-is-a-python-api-for-hosting-and-handling-datasets-for-offline-reinforcement-learning">
+<h1>Minari is a Python API for hosting and handling datasets for Offline Reinforcement Learning<a class="headerlink" href="#minari-is-a-python-api-for-hosting-and-handling-datasets-for-offline-reinforcement-learning" title="Permalink to this heading">#</a></h1>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/minari-text.png"><img alt="Minari Logo" src="_images/minari-text.png" style="width: 600px;" /></a>
+</figure>
+<p style="text-align: center;">
+"見習い - learning by observation"
+</p>
+<div class="termy">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// Install Minari</span>
+<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>minari
+<span class="go">---&gt; 100%</span>
+
+<span class="go">// Check Minari version</span>
+<span class="gp">$ </span>minari<span class="w"> </span>--version
+<span class="go">Minari version: 0.3.0</span>
+
+<span class="go">// Show remote datasets.</span>
+<span class="gp">$ </span>minari<span class="w"> </span>list<span class="w"> </span>remote
+
+<span class="go">                 &lt;i&gt;Minari datasets in Farama server&lt;/i&gt;                    </span>
+<span class="go">┌────────────────┬───────────┬────────────┬─────────┬───────────┐ </span>
+<span class="go">│                │     &lt;b&gt;Total&lt;/b&gt; │      &lt;b&gt;Total&lt;/b&gt; │         │           │</span>
+<span class="go">│ &lt;b&gt;Name&lt;/b&gt;           │  &lt;b&gt;Episodes&lt;/b&gt; │      &lt;b&gt;Steps&lt;/b&gt; │  &lt;b&gt;Author&lt;/b&gt; │ &lt;b&gt;Email&lt;/b&gt;     │</span>
+<span class="go">┡────────────────╇───────────╇────────────╇─────────╇───────────┩</span>
+<span class="go">│ &lt;font color=&quot;#A1EFE4&quot;&gt;door-cloned-v0&lt;/font&gt; │      &lt;font color=&quot;#03AC13&quot;&gt;4356&lt;/font&gt; │    &lt;font color=&quot;#03AC13&quot;&gt;1000000&lt;/font&gt; │ &lt;font color=&quot;#FF00FF&quot;&gt;Farama&lt;/font&gt;  │&lt;font color=&quot;#FF00FF&quot;&gt;@farama.org&lt;/font&gt;│</span>
+<span class="go">│ &lt;font color=&quot;#A1EFE4&quot;&gt;door-expert-v0&lt;/font&gt; │      &lt;font color=&quot;#03AC13&quot;&gt;5000&lt;/font&gt; │    &lt;font color=&quot;#03AC13&quot;&gt;1000000&lt;/font&gt; │ &lt;font color=&quot;#FF00FF&quot;&gt;Farama&lt;/font&gt;  │&lt;font color=&quot;#FF00FF&quot;&gt;@farama.org&lt;/font&gt;│</span>
+<span class="go">│ &lt;font color=&quot;#A1EFE4&quot;&gt;door-human-v0&lt;/font&gt;  │        &lt;font color=&quot;#03AC13&quot;&gt;25&lt;/font&gt; │       &lt;font color=&quot;#03AC13&quot;&gt;6729&lt;/font&gt; │ &lt;font color=&quot;#FF00FF&quot;&gt;Farama&lt;/font&gt;  │&lt;font color=&quot;#FF00FF&quot;&gt;@farama.org&lt;/font&gt;│</span>
+<span class="go">│ &lt;font color=&quot;#A1EFE4&quot;&gt;pen-cloned-v0&lt;/font&gt;  │      &lt;font color=&quot;#03AC13&quot;&gt;3736&lt;/font&gt; │     &lt;font color=&quot;#03AC13&quot;&gt;500000&lt;/font&gt; │ &lt;font color=&quot;#FF00FF&quot;&gt;Farama&lt;/font&gt;  │&lt;font color=&quot;#FF00FF&quot;&gt;@farama.org&lt;/font&gt;│</span>
+<span class="go">│ &lt;font color=&quot;#A1EFE4&quot;&gt;pen-expert-v0&lt;/font&gt;  │      &lt;font color=&quot;#03AC13&quot;&gt;4958&lt;/font&gt; │     &lt;font color=&quot;#03AC13&quot;&gt;499206&lt;/font&gt; │ &lt;font color=&quot;#FF00FF&quot;&gt;Farama&lt;/font&gt;  │&lt;font color=&quot;#FF00FF&quot;&gt;@farama.org&lt;/font&gt;│</span>
+<span class="go">│ &lt;font color=&quot;#A1EFE4&quot;&gt;pen-human-v0&lt;/font&gt;   │        &lt;font color=&quot;#03AC13&quot;&gt;25&lt;/font&gt; │       &lt;font color=&quot;#03AC13&quot;&gt;5000&lt;/font&gt; │ &lt;font color=&quot;#FF00FF&quot;&gt;Farama&lt;/font&gt;  │&lt;font color=&quot;#FF00FF&quot;&gt;@farama.org&lt;/font&gt;│</span>
+<span class="go">└────────────────┴───────────┴────────────┴─────────┴───────────┘ </span>
+</pre></div>
+</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
-<section id="minari-is-a-python-library-for-conducting-research-in-offline-reinforcement-learning">
-<h1>Minari is a Python library for conducting research in offline reinforcement learning<a class="headerlink" href="#minari-is-a-python-library-for-conducting-research-in-offline-reinforcement-learning" title="Permalink to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
           </article>
@@ -394,6 +448,8 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
+    <script src="_static/js/termynal.js"></script>
+    <script src="_static/js/custom.js"></script>
     
     <script>
       const createCORSRequest = (method, url) => {

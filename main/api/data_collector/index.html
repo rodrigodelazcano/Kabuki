@@ -7,12 +7,12 @@
     <meta property="og:title" content="Minari Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
-    <meta property="og:url" content="https://minari.farama.org/tutorials/dataset_creation/index.html" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="PointMaze D4RL dataset" href="point_maze_dataset/" /><link rel="prev" title="EpisodeMetadataCallback" href="../../api/data_collector_callbacks/episode_metadata_callback/" />
-        <link rel="canonical" href="https://minari.farama.org/tutorials/dataset_creation/index.html" />
+    <meta property="og:url" content="https://minari.farama.org/api/data_collector.html" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="StepDataCallback" href="../data_collector_callbacks/step_data_callback/" /><link rel="prev" title="MinariDataset" href="../minari_dataset/" />
+        <link rel="canonical" href="https://minari.farama.org/api/data_collector.html" />
 
     <link rel="shortcut icon" href="../../_static/favicon.png"/><!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07.dev1 -->
-        <title>Dataset Creation - Minari Documentation</title>
+        <title>DataCollectorV0 - Minari Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=721f65a87c37740baa8d605b09db5bec3a2987a8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
@@ -210,7 +210,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -236,19 +236,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../content/minari_cli/">Minari CLI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/minari_functions/">Minari</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/minari_dataset/">MinariDataset</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/data_collector/">DataCollectorV0</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/data_collector_callbacks/step_data_callback/">StepDataCallback</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/data_collector_callbacks/episode_metadata_callback/">EpisodeMetadataCallback</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../minari_functions/">Minari</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../minari_dataset/">MinariDataset</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">DataCollectorV0</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_collector_callbacks/step_data_callback/">StepDataCallback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_collector_callbacks/episode_metadata_callback/">EpisodeMetadataCallback</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
-<ul class="current">
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Dataset Creation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="point_maze_dataset/">PointMaze D4RL dataset</a></li>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/dataset_creation/">Dataset Creation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/dataset_creation/point_maze_dataset/">PointMaze D4RL dataset</a></li>
 </ul>
 </li>
 </ul>
@@ -294,7 +294,7 @@
                 </svg>
               </button>
             </div>
-            <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <label class="toc-overlay-icon toc-content-icon" for="__toc">
               <div class="visually-hidden">Toggle table of contents sidebar</div>
               <i class="icon"><svg>
                   <use href="#svg-toc"></use>
@@ -303,13 +303,116 @@
           </div>
           <article role="main">
             
-            <section id="dataset-creation">
-<span id="sphx-glr-tutorials-dataset-creation"></span><h1>Dataset Creation<a class="headerlink" href="#dataset-creation" title="Permalink to this heading">#</a></h1>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="PointMaze D4RL dataset"><img alt="PointMaze D4RL dataset" src="../../_images/sphx_glr_point_maze_dataset_thumb.png" />
-<p><a class="reference internal" href="point_maze_dataset/#sphx-glr-tutorials-dataset-creation-point-maze-dataset-py"><span class="std std-ref">PointMaze D4RL dataset</span></a></p>
-  <div class="sphx-glr-thumbnail-title">PointMaze D4RL dataset</div>
-</div></div><div class="toctree-wrapper compound">
+            <section id="datacollectorv0">
+<h1>DataCollectorV0<a class="headerlink" href="#datacollectorv0" title="Permalink to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
 </div>
+<section id="minari-datacollectorv0">
+<h2>minari.DataCollectorV0<a class="headerlink" href="#minari-datacollectorv0" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="minari.DataCollectorV0">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">minari.</span></span><span class="sig-name descname"><span class="pre">DataCollectorV0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_data_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../data_collector_callbacks/step_data_callback/#minari.StepDataCallback" title="minari.utils.data_collector.StepDataCallback"><span class="pre">StepDataCallback</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">StepDataCallback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode_metadata_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../data_collector_callbacks/episode_metadata_callback/#minari.EpisodeMetadataCallback" title="minari.utils.data_collector.EpisodeMetadataCallback"><span class="pre">EpisodeMetadataCallback</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">EpisodeMetadataCallback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record_infos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_buffer_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_buffer_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minari.DataCollectorV0" title="Permalink to this definition">#</a></dt>
+<dd><p>Gymnasium environment wrapper that collects step data.</p>
+<p>This wrapper is meant to work as a temporary buffer of the environment data before creating a Minari dataset. The creation of the buffers
+that will be convert to a Minari dataset is agnostic to the user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">minari</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">minari</span><span class="o">.</span><span class="n">DataCollectorV0</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;EnvID&#39;</span><span class="p">))</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">rew</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">minari</span><span class="o">.</span><span class="n">create_dataset_from_collector_env</span><span class="p">(</span><span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;EnvID-dataset&quot;</span><span class="p">,</span> <span class="n">collector_env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Some of the characteristics of this wrapper:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The step data is stored per episode in dictionaries. This dictionaries are then stored in-memory in a global list buffer. The
+episode dictionaries contain items with list buffers as values for the main episode step datasets <cite>observations</cite>, <cite>actions</cite>,
+<cite>terminations</cite>, and <cite>truncations</cite>, the <cite>infos</cite> key can be a list or another nested dictionary with extra datasets. Separate data
+keys can be added by passing a custom <cite>StepDataCallback</cite> to the wrapper. When creating the HDF5 file the list values in the episode
+dictionary will be stored as datasets and the nested dictionaries will generate a new HDF5 group.</p></li>
+<li><p>A new episode dictionary buffer is created if the env.step(action) call returns <cite>truncated</cite> or <cite>terminated</cite>, or if the environment calls
+env.reset(). If calling reset and the previous episode was not <cite>truncated</cite> or <cite>terminated</cite>, this will automatically be <cite>truncated</cite>.</p></li>
+<li><p>To perform caching the user can set the <cite>max_buffer_steps</cite> or <cite>max_buffer_episodes</cite> before saving the in-memory buffers to a temporary HDF5
+file in disk. If non of <cite>max_buffer_steps</cite> or <cite>max_buffer_episodes</cite> are set, the data will move from in-memory to a permanent location only
+when the Minari dataset is created. To move all the stored data to a permanent location use DataCollectorV0.save_to_disK(path_to_permanent_location).</p></li>
+</ul>
+</div></blockquote>
+<p>Initialize the data colletor attributes and create the temporary directory for caching.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<em>gym.Env</em>) – Gymnasium environment</p></li>
+<li><p><strong>step_data_callback</strong> (<em>type</em><em>[</em><a class="reference internal" href="../data_collector_callbacks/step_data_callback/#minari.StepDataCallback" title="minari.StepDataCallback"><em>StepDataCallback</em></a><em>]</em><em>, </em><em>optional</em>) – Callback class to edit/update step databefore storing to buffer. Defaults to StepDataCallback.</p></li>
+<li><p><strong>episode_metadata_callback</strong> (<em>type</em><em>[</em><a class="reference internal" href="../data_collector_callbacks/episode_metadata_callback/#minari.EpisodeMetadataCallback" title="minari.EpisodeMetadataCallback"><em>EpisodeMetadataCallback</em></a><em>]</em><em>, </em><em>optional</em>) – Callback class to add custom metadata to episode group in HDF5 file. Defaults to EpisodeMetadataCallback.</p></li>
+<li><p><strong>record_infos</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True record the info return key of each step. Defaults to False.</p></li>
+<li><p><strong>max_buffer_steps</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – number of steps saved in-memory buffers before dumping to HDF5 file in disk. Defaults to None.</p></li>
+<li><p><strong>max_buffer_episodes</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – number of episodes saved in-memory buffers before dumping to HDF5 file in disk. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – <cite>max_buffer_steps</cite> and <cite>max_buffer_episodes</cite> can’t be passed at the same time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="minari.DataCollectorV0.step">
+<span class="sig-prename descclassname"><span class="pre">minari.DataCollectorV0.</span></span><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ActType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#minari.DataCollectorV0.step" title="Permalink to this definition">#</a></dt>
+<dd><p>Gymnasium step method.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="minari.DataCollectorV0.reset">
+<span class="sig-prename descclassname"><span class="pre">minari.DataCollectorV0.</span></span><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#minari.DataCollectorV0.reset" title="Permalink to this definition">#</a></dt>
+<dd><p>Gymnasium environment reset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="minari.DataCollectorV0.close">
+<span class="sig-prename descclassname"><span class="pre">minari.DataCollectorV0.</span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minari.DataCollectorV0.close" title="Permalink to this definition">#</a></dt>
+<dd><p>Close the Gymnasium environment.</p>
+<p>Clear buffer and close temporary directory.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="minari.DataCollectorV0.save_to_disk">
+<span class="sig-prename descclassname"><span class="pre">minari.DataCollectorV0.</span></span><span class="sig-name descname"><span class="pre">save_to_disk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minari.DataCollectorV0.save_to_disk" title="Permalink to this definition">#</a></dt>
+<dd><p>Save all in-memory buffer data and move temporary HDF5 file to a permanent location in disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to store permanent HDF5, i.e: ‘/home/foo/datasets/data.hdf5’</p></li>
+<li><p><strong>dataset_metadata</strong> (<em>Dict</em><em>, </em><em>optional</em>) – additional metadata to add to HDF5 dataset file as attributes. Defaults to {}.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="minari.DataCollectorV0.clear_buffer_to_tmp_file">
+<span class="sig-prename descclassname"><span class="pre">minari.DataCollectorV0.</span></span><span class="sig-name descname"><span class="pre">clear_buffer_to_tmp_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate_last_episode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minari.DataCollectorV0.clear_buffer_to_tmp_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Save the global buffer in-memory to a temporary HDF5 file in disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>truncate_last_episode</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True the last episode from the buffer will be truncated before saving to disk. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
 </section>
 
           </article>
@@ -317,18 +420,18 @@
         <footer>
           
           <div class="related-pages">
-            <a class="next-page" href="point_maze_dataset/">
+            <a class="next-page" href="../data_collector_callbacks/step_data_callback/">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PointMaze D4RL dataset</div>
+                <div class="title">StepDataCallback</div>
               </div>
               <svg class="furo-related-icon">
                 <use href="#svg-arrow-right"></use>
               </svg>
             </a>
-            <a class="prev-page" href="../../api/data_collector_callbacks/episode_metadata_callback/">
+            <a class="prev-page" href="../minari_dataset/">
               <svg class="furo-related-icon">
                 <use href="#svg-arrow-right"></use>
               </svg>
@@ -337,7 +440,7 @@
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">EpisodeMetadataCallback</div>
+                <div class="title">MinariDataset</div>
                 
               </div>
             </a>
@@ -369,8 +472,38 @@
           
         </footer>
       </div>
-      <aside class="toc-drawer no-toc">
+      <aside class="toc-drawer">
         
+        
+        <div class="toc-sticky toc-scroll">
+          <div class="toc-title-container">
+            <span class="toc-title">
+              On this page
+            </span>
+          </div>
+          <div class="toc-tree-container">
+            <div class="toc-tree">
+              <ul>
+<li><a class="reference internal" href="#">DataCollectorV0</a><ul>
+<li><a class="reference internal" href="#minari-datacollectorv0">minari.DataCollectorV0</a><ul>
+<li><a class="reference internal" href="#minari.DataCollectorV0"><code class="docutils literal notranslate"><span class="pre">DataCollectorV0</span></code></a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#minari.DataCollectorV0.step"><code class="docutils literal notranslate"><span class="pre">step()</span></code></a></li>
+<li><a class="reference internal" href="#minari.DataCollectorV0.reset"><code class="docutils literal notranslate"><span class="pre">reset()</span></code></a></li>
+<li><a class="reference internal" href="#minari.DataCollectorV0.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
+<li><a class="reference internal" href="#minari.DataCollectorV0.save_to_disk"><code class="docutils literal notranslate"><span class="pre">save_to_disk()</span></code></a></li>
+<li><a class="reference internal" href="#minari.DataCollectorV0.clear_buffer_to_tmp_file"><code class="docutils literal notranslate"><span class="pre">clear_buffer_to_tmp_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+          </div>
+        </div>
         
         
       </aside>
