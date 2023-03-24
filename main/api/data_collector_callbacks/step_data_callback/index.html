@@ -237,9 +237,12 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../minari_functions/">Minari</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../minari_dataset/">MinariDataset</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../data_collector/">DataCollectorV0</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../minari_functions/">Minari</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../minari_dataset/minari_dataset/">MinariDataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../minari_dataset/episode_data/">EpisodeData</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../data_collector/">DataCollectorV0</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">StepDataCallback</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../episode_metadata_callback/">EpisodeMetadataCallback</a></li>
 </ul>
@@ -247,10 +250,14 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/dataset_creation/">Dataset Creation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/dataset_creation/">Dataset Creation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorials/dataset_creation/point_maze_dataset/">PointMaze D4RL dataset</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datasets/coming_soon/">Available Minari Datasets (WIP)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
 <ul>
@@ -328,23 +335,18 @@ edit the observation, action, reward, termination, truncation, or info returns.<
 <p>The input arguments belong to a Gymnasium stepping transition: <cite>obs, rew, terminated, truncated, info = env.step(action)</cite>.
 Override this method to add additional keys or edit each environment’s step returns. Additional nested dictionaries can be added to the returned step dictionary
 as follows:</p>
-<dl>
-<dt><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a></dt><dd><dl>
-<dt>class CustomStepDataCallback(StepDataCallback):</dt><dd><dl>
-<dt>def __call__(self, env, <a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs):</dt><dd><p>step_data = super().__call__(env, <a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs)</p>
-<p>step_data[‘environment_states’] = {}
-step_data[‘environment_states’][‘pose’] = {}
-step_data[‘environment_states’][‘pose’][‘position’] = env.position
-step_data[‘environment_states’][‘pose’][‘orientation’] = env.orientation
-step_data[‘environment_states’][‘velocity’] = env.velocity</p>
-<p>return step_data</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomStepDataCallback</span><span class="p">(</span><span class="n">StepDataCallback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">step_data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;environment_states&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;environment_states&#39;</span><span class="p">][</span><span class="s1">&#39;pose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;environment_states&#39;</span><span class="p">][</span><span class="s1">&#39;pose&#39;</span><span class="p">][</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">position</span>
+        <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;environment_states&#39;</span><span class="p">][</span><span class="s1">&#39;pose&#39;</span><span class="p">][</span><span class="s1">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">orientation</span>
+        <span class="n">step_data</span><span class="p">[</span><span class="s1">&#39;environment_states&#39;</span><span class="p">][</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">velocity</span>
+
+        <span class="k">return</span> <span class="n">step_data</span>
+</pre></div>
+</div>
 <p>The episode groups in the HDF5 file of this Minari dataset will contain a subgroup called <cite>environment_states</cite> with dataset <cite>velocity</cite> and another subgroup called <cite>pose</cite>
 with datasets <cite>position</cite> and <cite>orientation</cite></p>
 <dl class="field-list simple">
