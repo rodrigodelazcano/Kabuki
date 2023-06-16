@@ -93,12 +93,14 @@ class MinariStorage:
         self,
         hdf_ref: Union[h5py.Group, h5py.Dataset],
         space: gym.spaces.Space,
-    ) -> Union[Dict, Tuple, np.ndarray]:  
+    ) -> Union[Dict, Tuple, np.ndarray]:
         if isinstance(space, gym.spaces.Tuple):
             assert isinstance(hdf_ref, h5py.Group)
             result = []
             for i in range(len(hdf_ref.keys())):
-                result.append(self._decode_space(hdf_ref[f"_index_{i}"], space.spaces[i]))
+                result.append(
+                    self._decode_space(hdf_ref[f"_index_{i}"], space.spaces[i])
+                )
             return tuple(result)
         elif isinstance(space, gym.spaces.Dict):
             assert isinstance(hdf_ref, h5py.Group)
@@ -123,16 +125,22 @@ class MinariStorage:
         with h5py.File(self._data_path, "r") as file:
             for ep_idx in episode_indices:
                 ep_group = file[f"episode_{ep_idx}"]
-                out.append({
-                    "id": ep_group.attrs.get("id"),
-                    "total_timesteps": ep_group.attrs.get("total_steps"),
-                    "seed": ep_group.attrs.get("seed"),
-                    "observations": self._decode_space(ep_group["observations"], self.observation_space),
-                    "actions": self._decode_space(ep_group["actions"], self.action_space),
-                    "rewards": ep_group["rewards"][()],
-                    "terminations": ep_group["terminations"][()],
-                    "truncations": ep_group["truncations"][()],
-                })
+                out.append(
+                    {
+                        "id": ep_group.attrs.get("id"),
+                        "total_timesteps": ep_group.attrs.get("total_steps"),
+                        "seed": ep_group.attrs.get("seed"),
+                        "observations": self._decode_space(
+                            ep_group["observations"], self.observation_space
+                        ),
+                        "actions": self._decode_space(
+                            ep_group["actions"], self.action_space
+                        ),
+                        "rewards": ep_group["rewards"][()],
+                        "terminations": ep_group["terminations"][()],
+                        "truncations": ep_group["truncations"][()],
+                    }
+                )
 
         return out
 
