@@ -8,18 +8,18 @@
     <meta property="og:type" content="website" />
     <meta property="og:description" content="Minari is a Python library for conducting research in offline reinforcement learning." />
     <meta property="og:url" content="https://minari.farama.org/tutorials/dataset_creation/point_maze_dataset.html" /><meta property="og:image" content="https://minari.farama.org/_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Door" href="../../../datasets/door/" /><link rel="prev" title="Dataset Creation" href="../" />
+<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Using Datasets" href="../../using_datasets/" /><link rel="prev" title="Collecting a subset of a dictionary space with StepDataCallback" href="../observation_space_subseting/" />
         <link rel="canonical" href="https://minari.farama.org/tutorials/dataset_creation/point_maze_dataset.html" />
 
     <link rel="shortcut icon" href="../../../_static/favicon.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20.dev1 -->
         <title>PointMaze D4RL dataset - Minari Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=a022fd11c0d7e10ac71ac296890386cea7a2fa24" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=093e2efd5a2c7b46ab7c7157e45f5f05a1e0a463" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/termynal.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/directory_tree.css" />
@@ -60,18 +60,6 @@
               <line x1="0.232" y1="12" x2="23.5" y2="12"></line>
               <line x1="0.232" y1="20" x2="23.5" y2="20"></line>
             </svg>
-            <!-- <svg viewBox="0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0.5" y1="4.5" x2="23.5" y2="4.5" style="fill: none; "></line>
-              <line x1="0.5" y1="12" x2="14" y2="12" ></line>
-              <line x1="0.5" y1="19.5" x2="23.5" y2="19.5"></line>
-              <polyline style="stroke-width: 0px;" points="17 7 22 12 17 17"></polyline>
-            </svg> -->
-            <!-- <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px">
-              <defs></defs>
-              <rect y="1" width="22" height="22" rx="2" ry="2" style="fill: none;" x="1"></rect>
-              <line x1="8" y1="1" x2="8" y2="23"></line>
-              <polyline style="stroke-linecap: round; fill: none; stroke-linejoin: round;" points="13 7 17 12 13 17"></polyline>
-            </svg> -->
           </label>
         </div>
         <div class="farama-header__left farama-header__center--mobile">
@@ -251,37 +239,42 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../">Dataset Creation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Dataset Creation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../observation_space_subseting/">Collecting a subset of a dictionary space with StepDataCallback</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">PointMaze D4RL dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../using_datasets/">Using Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Using Datasets</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../using_datasets/behavioral_cloning/">Behavioral cloning with PyTorch</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Datasets</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/door/">Door</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Door</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/door/">Door</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Door</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/door/human/">Human</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/door/expert/">Expert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/door/cloned/">Cloned</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/hammer/">Hammer</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Hammer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/hammer/">Hammer</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Hammer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/hammer/human/">Human</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/hammer/expert/">Expert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/hammer/cloned/">Cloned</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/relocate/">Relocate</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Relocate</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/relocate/">Relocate</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Relocate</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/relocate/human/">Human</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/relocate/expert/">Expert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/relocate/cloned/">Cloned</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/pen/">Pen</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Pen</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/pen/">Pen</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Pen</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pen/human/">Human</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pen/expert/">Expert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pen/cloned/">Cloned</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/pointmaze/">Point Maze</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Point Maze</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/pointmaze/">Point Maze</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Point Maze</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pointmaze/open/">Open</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pointmaze/umaze/">Umaze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pointmaze/medium/">Medium</a></li>
@@ -292,7 +285,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/pointmaze/large-dense/">Large-Dense</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/kitchen/">Kitchen</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Kitchen</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../datasets/kitchen/">Kitchen</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Kitchen</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/kitchen/partial/">Partial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/kitchen/complete/">Complete</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../datasets/kitchen/mixed/">Mixed</a></li>
@@ -517,15 +510,70 @@ such as:</p>
 </section>
 <section id="waypoint-controller">
 <h2>Waypoint Controller<a class="headerlink" href="#waypoint-controller" title="Permalink to this heading">#</a></h2>
-<p>Next step will be to create a controller to allow the agent to follow the waypoint trajectory.
-D4RL uses a PD controller to output continuous force actions from position and velocity
-references.</p>
+<p>The step will be to create a controller to allow the agent to follow the waypoint trajectory.
+D4RL uses a PD controller to output continuous force actions from position and velocity.
+A PD controller is a variation of the PID controller often used in classical Control Theory.
+PID combines three components: a Proportial Term(P), Integral Term(I) and Derivative Term (D)</p>
+<section id="proportional-term-p">
+<h3>1. Proportional Term (P)<a class="headerlink" href="#proportional-term-p" title="Permalink to this heading">#</a></h3>
+<p>The proportional term in a PID controller adjusts the control action based on the current error, which
+is the difference between the desired value (setpoint) and the current value of the process variable.
+The control action is directly proportional to the error. A higher error results in a stronger control action.
+However, the proportional term alone can lead to overshooting or instability. Note <span class="math notranslate nohighlight">\(\tau\)</span> is our control value.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-\[\tau = k_{p}(p_{goal} - p_{agent}) + k_{d}v_{agent}\]</div>
+\[\tau = k_{p}(\text{Error})\]</div>
 </div>
-<p>Each target position in the waypoint trajectory is converted from discrete to a continuous value by adding some noise to
-the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinates. This will allow to add more variance in the trajectories generated for the offline dataset.</p>
+</section>
+<section id="derivative-term-d">
+<h3>2. Derivative Term (D)<a class="headerlink" href="#derivative-term-d" title="Permalink to this heading">#</a></h3>
+<p>The derivative term in a PD controller considers the rate of change of the error over time.
+It helps to predict the future behavior of the error. By dampening the control action based
+on the rate of change of the error, the derivative term contributes to system stability and reduces overshooting.
+It also helps the system respond quickly to changes in the error.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\tau = k_{d}(d(\text{Error}) / dt)\]</div>
+</div>
+<p>So for a PD controller we have the equation below. We explain what the values <span class="math notranslate nohighlight">\(k_{d}\)</span> and <span class="math notranslate nohighlight">\(k_{p}\)</span> mean in a bit</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\tau = k_{p}(\text{Error})  + k_{d}(d(\text{Error}) / dt)\]</div>
+</div>
+</section>
+<section id="integral-term-i">
+<h3>3. Integral Term (I)<a class="headerlink" href="#integral-term-i" title="Permalink to this heading">#</a></h3>
+<p>The integral term in a PID controller integrates the cumulative error over time.
+It helps to address steady-state errors or biases that may exist in the system.
+The integral term continuously adjusts the control action based on the accumulated error,
+aiming to eliminate any long-term deviations between the desired setpoint and the actual process variable.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\tau = k_{I}{\int}_0^t(\text{Error}) dt\]</div>
+</div>
+<p>Finally for a PID controller we have the equation below</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\tau = k_{p}(\text{Error})  + k_{d}(d(\text{Error}) / dt) +  k_{I}\int_{0}^{t}(\text{Error}) dt\]</div>
+</div>
+<p>In the PID controller formula, <span class="math notranslate nohighlight">\(K_p\)</span>, <span class="math notranslate nohighlight">\(K_i\)</span>, and <span class="math notranslate nohighlight">\(K_d\)</span> are the respective gains for the proportional, integral, and derivative terms.
+These gains determine the influence of each term on the control action.
+The optimal values for these gains are typically determined through tuning, which involves adjusting
+the gains to achieve the desired control performance.</p>
+<p>Now back to our controller as stated previously, for the D4RL task we use a PD controller and we
+follow the same theme as what we have stated before as can be seen below. The <span class="math notranslate nohighlight">\(Error\)</span> is equlivalent
+to the difference between the <span class="math notranslate nohighlight">\(\text{goal}_\text{pose}\)</span> and <span class="math notranslate nohighlight">\(\text{agent}_\text{pose}\)</span> and we replace the derivative term <span class="math notranslate nohighlight">\((d(\text{Error}) / dt)\)</span> with
+the velocity of the the agent <span class="math notranslate nohighlight">\(v_{\text{agent}}\)</span>, we can think of this as a measure of the speed at which the agent
+is approaching the target position. When the agent is moving quickly towards the target, the
+derivative term will be larger, contributing to a stronger corrective action from the controller.
+On the other hand, if the agent is already close to the target and moving slowly, the derivative term will be smaller,
+resulting in a less aggressive control action.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\tau = k_{p}(p_{\text{goal}} - p_{\text{agent}}) + k_{d}v_{\text{agent}}\]</div>
+</div>
+<p>Each target position in the waypoint trajectory is converted from discrete to a continuous value and we also add some noise to
+the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> coordinates to add more variance in the trajectories generated for the offline dataset.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">WaypointController</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Agent controller to follow waypoints in the maze.</span>
 
@@ -577,6 +625,7 @@ the <code class="docutils literal notranslate"><span class="pre">x</span></code>
         <span class="k">return</span> <span class="n">action</span>
 </pre></div>
 </div>
+</section>
 </section>
 <section id="modified-stepdatacallback">
 <h2>Modified StepDataCallback<a class="headerlink" href="#modified-stepdatacallback" title="Permalink to this heading">#</a></h2>
@@ -687,18 +736,18 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
         <footer>
           
           <div class="related-pages">
-            <a class="next-page" href="../../../datasets/door/">
+            <a class="next-page" href="../../using_datasets/">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Door</div>
+                <div class="title">Using Datasets</div>
               </div>
               <svg class="furo-related-icon">
                 <use href="#svg-arrow-right"></use>
               </svg>
             </a>
-            <a class="prev-page" href="../">
+            <a class="prev-page" href="../observation_space_subseting/">
               <svg class="furo-related-icon">
                 <use href="#svg-arrow-right"></use>
               </svg>
@@ -707,7 +756,7 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Dataset Creation</div>
+                <div class="title">Collecting a subset of a dictionary space with StepDataCallback</div>
                 
               </div>
             </a>
@@ -753,7 +802,12 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
               <ul>
 <li><a class="reference internal" href="#">PointMaze D4RL dataset</a><ul>
 <li><a class="reference internal" href="#waypoint-planner">WayPoint Planner</a></li>
-<li><a class="reference internal" href="#waypoint-controller">Waypoint Controller</a></li>
+<li><a class="reference internal" href="#waypoint-controller">Waypoint Controller</a><ul>
+<li><a class="reference internal" href="#proportional-term-p">1. Proportional Term (P)</a></li>
+<li><a class="reference internal" href="#derivative-term-d">2. Derivative Term (D)</a></li>
+<li><a class="reference internal" href="#integral-term-i">3. Integral Term (I)</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#modified-stepdatacallback">Modified StepDataCallback</a></li>
 <li><a class="reference internal" href="#collect-data-and-create-minari-dataset">Collect Data and Create Minari Dataset</a></li>
 <li><a class="reference internal" href="#references">References</a></li>
@@ -789,38 +843,58 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
     </script>
 
     
-    <script>
-          (() => {
-              if (!localStorage.getItem("shownCookieAlert")) {
-                  const boxElem = document.createElement("div");
-                  boxElem.classList.add("cookie-alert");
-                  const containerElem = document.createElement("div");
-                  containerElem.classList.add("cookie-alert__container");
-                  const textElem = document.createElement("p");
-                  textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
-                                      Google Analytics</a> to collect statistics. You can disable it by blocking
-                                      the JavaScript coming from www.google-analytics.com.`;
-                                      containerElem.appendChild(textElem);
-                  const closeBtn = document.createElement("button");
-                  closeBtn.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>`
-                  closeBtn.onclick = () => {
-                      localStorage.setItem("shownCookieAlert", "true");
-                      boxElem.style.display = "none";
-                  }
-                  containerElem.appendChild(closeBtn);
-                  boxElem.appendChild(containerElem);
-                  document.body.appendChild(boxElem);
-              }
-          })()
-      </script>
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5TRTT6R78"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5TRTT6R78"></script>
       <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        const enableGtag = () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-R5TRTT6R78');
+        }
+        (() => {
+            if (!localStorage.getItem("acceptedCookieAlert")) {
+                const boxElem = document.createElement("div");
+                boxElem.classList.add("cookie-alert");
+                const containerElem = document.createElement("div");
+                containerElem.classList.add("cookie-alert__container");
+                const textElem = document.createElement("p");
+                textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
+                                    Google Analytics</a> to collect statistics.`;
+                                    containerElem.appendChild(textElem);
 
-        gtag('config', 'G-R5TRTT6R78');
+                const declineBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Deny",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__decline",
+                  }
+                );
+                declineBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", false);
+                  boxElem.remove();
+                });
+
+                const acceptBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Allow",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__accept",
+                  }
+                );
+                acceptBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", true);
+                  boxElem.remove();
+                  enableGtag();
+                });
+
+                containerElem.appendChild(declineBtn);
+                containerElem.appendChild(acceptBtn);
+                boxElem.appendChild(containerElem);
+                document.body.appendChild(boxElem);
+            } else if (localStorage.getItem("acceptedCookieAlert") === "true") {
+              enableGtag();
+            }
+        })()
       </script>
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
@@ -832,6 +906,37 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
     <script src="../../../_static/js/custom.js"></script>
     
     <script>
+
+      const createProjectsList = (projects, displayImages) => {
+        const ulElem = Object.assign(document.createElement('ul'),
+          {
+            className:'farama-header-menu-list',
+          }
+        )
+        for (let project of projects) {
+          const liElem = document.createElement("li");
+          const aElem = Object.assign(document.createElement("a"),
+            {
+              href: project.link
+            }
+          );
+          liElem.appendChild(aElem);
+          if (displayImages) {
+            const imgElem = Object.assign(document.createElement("img"),
+              {
+                src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
+                alt: `${project.name} logo`,
+                className: "farama-black-logo-invert"
+              }
+            );
+            aElem.appendChild(imgElem);
+          }
+          aElem.appendChild(document.createTextNode(project.name));
+          ulElem.appendChild(liElem);
+        }
+        return ulElem;
+      }
+
       // Create menu with Farama projects by using the API at farama.org/api/projects.json
       const createCORSRequest = (method, url) => {
         let xhr = new XMLHttpRequest();
@@ -858,9 +963,15 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
       xhr.onload = () => {
         const jsonResponse = xhr.response;
         const sections = {
-          "Documentation": [],
-          "Mature Projects": [],
-          "Incubating Projects": [],
+          "Core Projects": [],
+          "Mature Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
+          "Incubating Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
           "Foundation": [
             {
               name: "About",
@@ -876,28 +987,38 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
             }
           ]
         }
+
+        // Categorize projects
         Object.keys(jsonResponse).forEach(key => {
           projectJson = jsonResponse[key];
           if (projectJson.website !== null) {
             projectJson.link = projectJson.website;
-            sections["Documentation"].push(projectJson)
-          } else if (projectJson.type == "mature") {
-            projectJson.link = projectJson.github;
-            sections["Mature Projects"].push(projectJson)
           } else {
             projectJson.link = projectJson.github;
-            sections["Incubating Projects"].push(projectJson)
+          }
+          if (projectJson.type === "core") {
+            sections["Core Projects"].push(projectJson)
+          } else if (projectJson.type == "mature") {
+            if (projectJson.website !== null) {
+              sections["Mature Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Mature Projects"]["Repositories"].push(projectJson)
+            }
+          } else {
+            if (projectJson.website !== null) {
+              sections["Incubating Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Incubating Projects"]["Repositories"].push(projectJson)
+            }
           }
         })
 
         const menuContainer = document.querySelector(".farama-header-menu__body");
 
         Object.keys(sections).forEach((key, i) => {
-          projects = sections[key];
           const sectionElem = Object.assign(
             document.createElement('div'), {
               className:'farama-header-menu__section',
-              style: "padding-left: 24px"
             }
           )
           sectionElem.appendChild(Object.assign(document.createElement('span'),
@@ -906,33 +1027,37 @@ Apr 8, 2020, <a class="reference external" href="https://towardsdatascience.com/
               innerText: key
             }
           ))
-          const ulElem = Object.assign(document.createElement('ul'),
-            {
-              className:'farama-header-menu-list',
-            }
-          )
-          for (let project of projects) {
-            const liElem = document.createElement("li");
-            const aElem = Object.assign(document.createElement("a"),
-              {
-                href: project.link
-              }
-            );
-            liElem.appendChild(aElem);
-            if (key !== "Foundation") {
-              const imgElem = Object.assign(document.createElement("img"),
-                {
-                  src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
-                  alt: `${project.name} logo`,
-                  className: "farama-black-logo-invert"
+          // is not a list
+          if (sections[key].constructor !== Array) {
+            const subSections = sections[key];
+            const subSectionContainerElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsections-container',
+                  style: key == "Mature Projects" ? "display: flex" : ""
                 }
-              );
-              aElem.appendChild(imgElem);
-            }
-            aElem.appendChild(document.createTextNode(project.name));
-            ulElem.appendChild(liElem);
+            )
+            Object.keys(subSections).forEach((subKey, i) => {
+              const subSectionElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsection',
+                }
+              )
+              subSectionElem.appendChild(Object.assign(document.createElement('span'),
+                {
+                  className:'farama-header-menu__subsection-title' ,
+                  innerText: subKey
+                }
+              ))
+              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              subSectionElem.appendChild(ulElem);
+              subSectionContainerElem.appendChild(subSectionElem);
+            })
+            sectionElem.appendChild(subSectionContainerElem);
+          } else {
+            const projects = sections[key];
+            const ulElem = createProjectsList(projects, true);
+            sectionElem.appendChild(ulElem);
           }
-          sectionElem.appendChild(ulElem);
           menuContainer.appendChild(sectionElem)
         });
       }
